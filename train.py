@@ -88,8 +88,8 @@ for e in range(opt.resume_epoch, opt.epochs):
         print("Epoch:", e, " Generator Loss: ", g_loss.item(), " Discriminator Loss: ", d_loss.item())
 
     if (e - opt.resume_epoch) % opt.save_every == 0:
-        torch.save(gen.state_dict(), 'checkpoints/gen'+str(e+1) +'.pt')
-        torch.save(disc.state_dict(), 'checkpoints/disc'+str(e+1) +'.pt')
+        torch.save(gen.state_dict(), 'checkpoints/gen_'+str(e+1) +'.pt')
+        torch.save(disc.state_dict(), 'checkpoints/disc_'+str(e+1) +'.pt')
         
 
 

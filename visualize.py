@@ -1,13 +1,15 @@
 import argparse
 import matplotlib.pyplot as plt 
 from models import Generator
+import numpy as np
+import torch
 
-%matplotlib inline
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--num_epoch', type = int, help = 'num of epoch for checkpoints to visualize results')
 opt = parser.parse_args()
 
+z_size = 128
 sample_size = 16
 fixed_z = np.random.uniform(-1, 1, size=(sample_size, z_size))
 fixed_z = torch.from_numpy(fixed_z).float()
@@ -21,7 +23,7 @@ def view_samples(epoch, samples):
         ax.yaxis.set_visible(False)
         im = ax.imshow(img.reshape((256, 256, 3)))
 
-gen = Generator()
+gen = Generator(z_size)
 
-gen.load_state_dict(torch.load("checkpoints/gen_"+str(opt.num_epoch)))
+gen.load_state_dict(torch.load("checkpoints/gen_"+str(opt.num_epoch) + ".pt"))
 
