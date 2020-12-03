@@ -83,6 +83,6 @@ class Generator(nn.Module):
         out = F.relu(self.t_conv5(out))
         out = F.relu(self.t_conv6(out))
         out = self.t_conv7(out)
-        out = F.tanh(out)
+        out = torch.tanh(out)
         
         return out

@@ -17,12 +17,12 @@ parser.add_argument('--resume_epoch', type = int, default = 0, help = 'Use when 
 parser.add_argument('--cuda', type = bool, default = False, help = 'train on GPU')
 parser.add_argument('--z_dim', type = int, default = 128, help = 'lateral dimension')
 parser.add_argument('--lr', type = float, default = 0.0002, help = 'learning rate')
-parser.add_argument('--beta1', type = float, default = 0.5, help = 'learning rate')
-parser.add_argument('--beta2', type = float, default = 0.999, help = 'learning rate')
+parser.add_argument('--beta1', type = float, default = 0.5, help = 'beta1')
+parser.add_argument('--beta2', type = float, default = 0.999, help = 'beta2')
 opt = parser.parse_args()
 
 T = Transform()
-data_dir = "../images"
+data_dir = "images"
 dataset = datasets.ImageFolder(data_dir, transform = T.train_data_transform)
 data_loader = torch.utils.data.DataLoader(dataset, batch_size = opt.batch_size, shuffle = True)
 
@@ -84,9 +84,13 @@ for e in range(opt.resume_epoch, opt.epochs):
 
         g_optimizer.step()
 
-        if (e - opt.resume_epoch) % opt.print_every == 0:
-            print("Epoch:", e, "Batch: ", batch_i, " Generator Loss: ", g_loss, " Discriminator Loss: ", d_loss)
+    if (e - opt.resume_epoch) % opt.print_every == 0:
+        print("Epoch:", e, " Generator Loss: ", g_loss.item(), " Discriminator Loss: ", d_loss.item())
 
+    if (e - opt.resume_epoch) % opt.save_every == 0:
+        torch.save(gen.state_dict(), 'checkpoints/gen'+str(e+1) +'.pt')
+        torch.save(disc.state_dict(), 'checkpoints/disc'+str(e+1) +'.pt')
+        
 
 
 
