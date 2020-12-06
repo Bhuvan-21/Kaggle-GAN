@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -65,10 +66,9 @@ class Generator(nn.Module):
         self.t_conv1 = deconv(conv_dim*4, conv_dim*4, 4)
         self.t_conv2 = deconv(conv_dim*4, conv_dim*4, 4)
         self.t_conv3 = deconv(conv_dim*4, conv_dim*4, 4)
-        self.t_conv4 = deconv(conv_dim*4, conv_dim*4, 4)
-        self.t_conv5 = deconv(conv_dim*4, conv_dim*2, 4)
-        self.t_conv6 = deconv(conv_dim*2, conv_dim, 4)
-        self.t_conv7 = deconv(conv_dim, 3, 4, batch_norm=False)
+        self.t_conv4 = deconv(conv_dim*4, conv_dim*2, 4)
+        self.t_conv5 = deconv(conv_dim*2, conv_dim, 4)
+        self.t_conv6 = deconv(conv_dim, 3, 4, batch_norm=False)
         
 
     def forward(self, x):
@@ -81,8 +81,7 @@ class Generator(nn.Module):
         out = F.relu(self.t_conv3(out))
         out = F.relu(self.t_conv4(out))
         out = F.relu(self.t_conv5(out))
-        out = F.relu(self.t_conv6(out))
-        out = self.t_conv7(out)
+        out = self.t_conv6(out)
         out = torch.tanh(out)
         
         return out
